@@ -1,0 +1,46 @@
+.body {
+    margin: 0px;
+    padding: 0px;
+}
+
+.game {
+    /* 16/9 Aspect Ratio */
+    width: 1280px;
+    height: 720px;
+    background-color: black;
+}
+
+.player {
+    position: absolute;
+    height: 150px;
+    width: 15px;
+    top: 285px;
+    background-color: gray;
+}
+
+.ball {}
+
+.topbar {
+    position: absolute;
+    height: 25px;
+    width: 1280px;
+    top: 25px;
+    background-color: gray;
+}
+
+.bottombar {
+    position: absolute;
+    height: 25px;
+    width: 1280px;
+    top: 670px;
+    background-color: gray;
+}
+
+.middleline {
+    position: absolute;
+    height: 25px;
+    width: 25px;
+    top: 450px;
+    Left: 640px;
+    background-color: gray;
+}
