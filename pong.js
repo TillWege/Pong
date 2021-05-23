@@ -2,7 +2,12 @@ $(() => {
     setupVars()
     setupCenterBar()
     setupPlayers()
-    setupGame()
+    document.onkeydown = (event) => {
+        console.log(event.code)
+        if (event.code == 'Space') {
+            setupGame()
+        }
+    }
 })
 
 
@@ -32,11 +37,34 @@ function setupPlayers() {
 
 function setupGame() {
     document.onkeydown = (event) => {
-        console.log(event)
+        if (event.key == 'w') {
+            moveplayer(window.p1, -3)
+        } else if (event.key == 's') {
+            moveplayer(window.p1, +3)
+        } else if (event.key == 'ArrowUp') {
+            moveplayer(window.p2, -3)
+        } else if (event.key == 'ArrowDown') {
+            moveplayer(window.p2, +3)
+        }
+    }
+    window.setInterval(doUpdate, 25)
+}
+
+function moveplayer(player, value) {
+    let playerTop = parseInt(player.css("top"))
+    console.log(playerTop)
+    if ((value > 0) && (playerTop >= (520 - value))) {
+        //Bewegen an unteren Rand
+        player.css("top", "520px")
+    } else if ((value < 0) && (playerTop <= (50 - value))) {
+        //Bewegen an oberen Rand
+        player.css("top", "50px")
+    } else {
+        //Bewegen ohne Einschränkungen
+        player.css("top", playerTop + value + "px")
     }
 
 
-    window.setInterval(doUpdate, 25)
 }
 
 function doUpdate() {
