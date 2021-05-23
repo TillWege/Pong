@@ -18,7 +18,14 @@
     background-color: gray;
 }
 
-.ball {}
+.ball {
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    top: 348px;
+    Left: 640px;
+    background-color: gray;
+}
 
 .topbar {
     position: absolute;
@@ -26,6 +33,19 @@
     width: 1280px;
     top: 25px;
     background-color: gray;
+}
+
+.score {
+    background-color: black;
+    font-size: 40px;
+    position: absolute;
+    height: 25px;
+    width: 25px;
+    top: 75px;
+    Left: 700px;
+    color: gray;
+    margin: 0px;
+    padding: 0px;
 }
 
 .bottombar {

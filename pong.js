@@ -1,3 +1,7 @@
+let vx = 3;
+let vy = 0;
+let score1 = 0;
+let score2 = 0;
 $(() => {
     setupVars()
     setupCenterBar()
@@ -47,6 +51,11 @@ function setupGame() {
             moveplayer(window.p2, +3)
         }
     }
+    var ball = $('<div class="ball"></div>')
+    window.game.append(ball)
+    if (RandomBoolean()) {
+        vx = -vx;
+    }
     window.setInterval(doUpdate, 25)
 }
 
@@ -63,10 +72,18 @@ function moveplayer(player, value) {
         //Bewegen ohne Einschränkungen
         player.css("top", playerTop + value + "px")
     }
-
-
 }
 
 function doUpdate() {
+    let ball = $('.ball')
+    ball.css("left", parseInt(ball.css("left")) + vx + 'px')
+}
 
+function RandomBoolean() {
+    return Math.random() < 0.5;
+}
+
+function addScore(playerNumber) {
+    score1++;
+    $(`#score${playerNumber}`).text(score1)
 }
