@@ -33,11 +33,11 @@ function setupDomVars() {
 
 function setupPlayers() {
     window.p1 = $('<div class="player"></div>');
-    window.p1.css("left", 50);
+    window.p1.css("left", "50px");
     window.game.append(window.p1);
 
     window.p2 = $('<div class="player"></div>');
-    window.p2.css("left", 1205);
+    window.p2.css("left", "1205px");
     window.game.append(window.p2);
 }
 
@@ -61,6 +61,8 @@ function setupGame() {
     $('#score1').text(0)
     score2 = 0
     $('#score2').text(0)
+    window.p1.css("top", "285px")
+    window.p2.css("top", "285px")
     if (RandomBoolean()) {
         vx = -vx;
     }
