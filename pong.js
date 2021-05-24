@@ -109,9 +109,17 @@ function doUpdate() {
         vy = -vy;
     }
 
-
-    if (50 <= x <= 65) {
-
+    debugger
+    if ((50 <= x) && (x <= 65)) {
+        let p1top = parseInt(window.p1.css("top"))
+        if ((p1top <= y) && (y <= p1top + 150)) {
+            vx = -vx;
+        }
+    } else if ((1215 <= (x + 20)) && ((x + 20) <= 1230)) {
+        let p2top = parseInt(window.p2.css("top"))
+        if ((p2top <= y) && (y <= p2top + 150)) {
+            vx = -vx;
+        }
     }
 
 
