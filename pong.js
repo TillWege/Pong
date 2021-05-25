@@ -75,7 +75,6 @@ function setupGame() {
 
 function moveplayer(player, value) {
     let playerTop = parseInt(player.css("top"))
-    console.log(playerTop)
     if ((value > 0) && (playerTop >= (520 - value))) {
         //Bewegen an unteren Rand
         player.css("top", "520px")
@@ -109,16 +108,21 @@ function doUpdate() {
         vy = -vy;
     }
 
-    debugger
+
+
     if ((50 <= x) && (x <= 65)) {
         let p1top = parseInt(window.p1.css("top"))
-        if ((p1top <= y) && (y <= p1top + 150)) {
-            vx = -vx;
+        let a = y - p1top;
+        if ((a >= -20) && (a <= 150)) {
+            vx = -vx
+            console.log("hit" + a)
         }
     } else if ((1215 <= (x + 20)) && ((x + 20) <= 1230)) {
         let p2top = parseInt(window.p2.css("top"))
-        if ((p2top <= y) && (y <= p2top + 150)) {
-            vx = -vx;
+        let a = y - p2top;
+        if ((a >= -20) && (a <= 150)) {
+            vx = -vx
+            console.log("hit" + a)
         }
     }
 
@@ -149,7 +153,6 @@ function addp1Score() {
 }
 
 function addp2Score() {
-    debugger;
     score2++;
     if (score2 == 5) {
         window.alert("Spieler 2 hat gewonnen!" + "\n" + "Space zum erneut spielen")
