@@ -3,7 +3,7 @@ let vy
 let score1
 let score2
 let WindowIntervalID
-
+const MAX_SPEED = 7;
 $(() => {
     setupDomVars()
     setupCenterBar()
@@ -130,20 +130,35 @@ function doUpdate() {
 
     function _CheckPlayers() {
         if ((50 <= x) && (x <= 65)) {
+            //Hitpos bestimmen
             let p1top = parseInt(window.p1.css("top"))
-            let a = y - p1top + 20;
-            if ((a >= 0) && (a <= 170)) {
-                let rel = a - 85;
-                vx = 7 * ((100 - Math.abs(rel)) / 100)
-                vy = 7 * (rel / 100)
+            let Hitpos = y - p1top + 20; // Wert von -85 bis 85
+            let RelHitpos = Hitpos - 85
+            if ((Hitpos >= 0) && (Hitpos <= 170)) {
+                if (RelHitpos == 0) {
+                    vy = 0
+                    vx = MAX_SPEED
+                } else {
+                    let vz = Math.sign(vy)
+                    if (vz == 0) { vz = Math.sign(RelHitpos) }
+                    vy = vz * ((Math.abs(RelHitpos) / 85) * 0.5) * MAX_SPEED // 0.5 für 45° Maximal-Winkel
+                    vx = (MAX_SPEED - Math.abs(vy))
+                }
             }
         } else if ((1215 <= (x + 20)) && ((x + 20) <= 1230)) {
             let p2top = parseInt(window.p2.css("top"))
-            let a = y - p2top + 20;
-            if ((a >= 0) && (a <= 170)) {
-                let rel = a - 85;
-                vx = -7 * ((100 - Math.abs(rel)) / 100)
-                vy = 7 * (rel / 100)
+            let Hitpos = y - p2top + 20;
+            let RelHitpos = Hitpos - 85
+            if ((Hitpos >= 0) && (Hitpos <= 170)) {
+                if (RelHitpos == 0) {
+                    vy = 0
+                    vx = -MAX_SPEED
+                } else {
+                    let vz = Math.sign(vy)
+                    if (vz == 0) { vz = Math.sign(RelHitpos) }
+                    vy = vz * ((Math.abs(RelHitpos) / 85) * 0.5) * MAX_SPEED // 0.5 für 45° Maximal-Winkel
+                    vx = -(MAX_SPEED - Math.abs(vy))
+                }
             }
         }
     }
