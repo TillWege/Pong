@@ -90,66 +90,71 @@ function moveplayer(player, value) {
 }
 
 function doUpdate() {
+    function _CheckTor() {
+        //Tor-Erkennung
+        if (x <= 0) {
+            addp2Score()
+            x = 640;
+            ball.css("left", "640px")
+            y = getRandomInt(75, 625)
+            ball.css("top", y + "px")
+            vx = getRandomFloat(0.2, 0.8) * 7
+            vy = 7 - vx
+            if (RandomBoolean()) {
+                vy = -vy
+            }
+        } else if (x >= 1260) {
+            addp1Score()
+            x = 640;
+            ball.css("left", "640px")
+            y = getRandomInt(75, 625)
+            ball.css("top", y + "px")
+            vx = -(getRandomFloat(0.2, 0.8) * 7)
+            vy = 7 + vx
+            if (RandomBoolean()) {
+                vy = -vy
+            }
+        }
+    }
+
+    function _CheckTopAndBottomBorder() {
+        //An dem oberen und unteren Balken refelktieren  
+        if (y < 50) {
+            y = 50
+            vy = -vy;
+        } else if (y > 650) {
+            y = 650
+            vy = -vy
+        }
+    }
+
+    function _CheckPlayers() {
+        if ((50 <= x) && (x <= 65)) {
+            let p1top = parseInt(window.p1.css("top"))
+            let a = y - p1top + 20;
+            if ((a >= 0) && (a <= 170)) {
+                let rel = a - 85;
+                vx = 7 * ((100 - Math.abs(rel)) / 100)
+                vy = 7 * (rel / 100)
+            }
+        } else if ((1215 <= (x + 20)) && ((x + 20) <= 1230)) {
+            let p2top = parseInt(window.p2.css("top"))
+            let a = y - p2top + 20;
+            if ((a >= 0) && (a <= 170)) {
+                let rel = a - 85;
+                vx = -7 * ((100 - Math.abs(rel)) / 100)
+                vy = 7 * (rel / 100)
+            }
+        }
+    }
+
     let ball = $('.ball')
     let x = parseInt(ball.css("left"))
     let y = parseInt(ball.css("top"))
 
-    //Tor-Erkennung
-    if (x <= 0) {
-        addp2Score()
-        x = 640;
-        ball.css("left", "640px")
-        y = getRandomInt(75, 625)
-        ball.css("top", y + "px")
-        vx = getRandomArbitrary(0.2, 0.8) * 7
-        vy = 7 - vx
-        if (RandomBoolean()) {
-            vy = -vy
-        }
-    } else if (x >= 1260) {
-        addp1Score()
-        x = 640;
-        ball.css("left", "640px")
-        y = getRandomInt(75, 625)
-        ball.css("top", y + "px")
-        vx = -(getRandomArbitrary(0.2, 0.8) * 7)
-        vy = 7 + vx
-        if (RandomBoolean()) {
-            vy = -vy
-        }
-    }
-
-    //An dem oberen und unteren Balken refelktieren  
-    if (y < 50) {
-        y = 50
-        vy = -vy;
-    } else if (y > 650) {
-        y = 650
-        vy = -vy
-    }
-
-
-
-    if ((50 <= x) && (x <= 65)) {
-        let p1top = parseInt(window.p1.css("top"))
-        let a = y - p1top + 20;
-        if ((a >= 0) && (a <= 170)) {
-            let rel = a - 85;
-            vx = 7 * ((100 - Math.abs(rel)) / 100)
-            vy = 7 * (rel / 100)
-        }
-    } else if ((1215 <= (x + 20)) && ((x + 20) <= 1230)) {
-        let p2top = parseInt(window.p2.css("top"))
-        let a = y - p2top + 20;
-        if ((a >= 0) && (a <= 170)) {
-            let rel = a - 85;
-            vx = -7 * ((100 - Math.abs(rel)) / 100)
-            vy = 7 * (rel / 100)
-        }
-    }
-
-
-
+    _CheckTor()
+    _CheckTopAndBottomBorder()
+    _CheckPlayers()
 
     //Ball um aktuellen geschwindigkeits-Vektor bewegen
     ball.css("left", x + vx + 'px')
@@ -166,7 +171,7 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function getRandomArbitrary(min, max) {
+function getRandomFloat(min, max) {
     return Math.random() * (max - min) + min;
 }
 
