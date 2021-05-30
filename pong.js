@@ -4,13 +4,21 @@ let score1
 let score2
 let WindowIntervalID
 const MAX_SPEED = 7;
+const MAX_ANGLE = 45; // Wert zwischen 0 und 90 für den Maximalen reflektions-Winkel
+const MAX_ANGLE_DEC = (MAX_ANGLE / 90)
+const PLAYER_SPEED = 4
+const START_CODE = 'Space'
+
+/** JQuery On-Load Funktion die  */
 $(() => {
+    /** inline-funktion um die verwendeten DOM-Variablen zuzuweisen  */
     function _setupDomVars() {
         window.game = $(".game")
         window.topbar = $(".topbar")
         window.bottombar = $(".bottombar")
     }
 
+    /** inline-funktion um die Mittellinie dynamisch zu erstellen */
     function _setupCenterBar() {
         for (var i = 1; i < 14; i++) {
             let newBlock = $('<div class="middleline"></div>')
@@ -19,6 +27,7 @@ $(() => {
         }
     }
 
+    /** inline-funktion um die beiden Spieler-Div's zu erstellen */
     function _setupPlayers() {
         window.p1 = $('<div class="player"></div>');
         window.p1.css("left", "50px");
@@ -34,29 +43,32 @@ $(() => {
     _setupCenterBar()
     _setupPlayers()
     document.onkeydown = (event) => {
-        if (event.code == 'Space') {
+        if (event.code == START_CODE) {
             setupGame()
         }
     }
 })
 
+/** Setzt die Hotkeys für die Spielerbewegung und den debugger. 
+ * (re)-initialisiert die Gamestate Variablen. 
+ * Erstellt den Ball und spielt ihn einer zufälligen Seite zu.  */
 function setupGame() {
     document.onkeydown = (event) => {
         if (event.key == 'w') {
-            moveplayer(window.p1, -2)
+            moveplayer(window.p1, -PLAYER_SPEED)
         } else if (event.key == 's') {
-            moveplayer(window.p1, +2)
+            moveplayer(window.p1, +PLAYER_SPEED)
         } else if (event.key == 'ArrowUp') {
-            moveplayer(window.p2, -2)
+            moveplayer(window.p2, -PLAYER_SPEED)
         } else if (event.key == 'ArrowDown') {
-            moveplayer(window.p2, +2)
+            moveplayer(window.p2, +PLAYER_SPEED)
         } else if (event.key == 'p') {
             debugger
         }
     }
 
     //Gamestate Variablen (re)-initialisieren
-    vx = 7
+    vx = MAX_SPEED
     vy = 0
     score1 = 0
     $('#score1').text(0)
@@ -74,6 +86,10 @@ function setupGame() {
     WindowIntervalID = window.setInterval(doUpdate, 25)
 }
 
+/** Versucht den übergebenen Spieler um den angegebenen Wert zu bewegen
+ *  @param player - JQuery Objekt welches bewegt wird
+ *  @param value - Wert um den das Objekt bewegt werden soll 
+ */
 function moveplayer(player, value) {
     let playerTop = parseInt(player.css("top"))
     if ((value > 0) && (playerTop >= (520 - value))) {
@@ -88,17 +104,19 @@ function moveplayer(player, value) {
     }
 }
 
+/** Update-Funktion der Gameloop. Bewegt den Ball, überprüft Reflektionen und ob ein Tor geschossen wurde. */
 function doUpdate() {
+    /** inline-Funktion welche überprüft ob eine Tor geschossen wurden. */
     function _CheckTor() {
-        //Tor-Erkennung
         if (x <= 0) {
             addp2Score()
             x = 640;
             ball.css("left", "640px")
             y = getRandomInt(75, 625)
             ball.css("top", y + "px")
-            vx = -(getRandomFloat(0.2, 0.8) * 7)
-            vy = 7 - vx
+
+            vy = getRandomFloat(0, MAX_ANGLE_DEC) * MAX_SPEED
+            vx = -(MAX_SPEED - vy)
             if (RandomBoolean()) {
                 vy = -vy
             }
@@ -108,16 +126,16 @@ function doUpdate() {
             ball.css("left", "640px")
             y = getRandomInt(75, 625)
             ball.css("top", y + "px")
-            vx = getRandomFloat(0.2, 0.8) * 7
-            vy = 7 + vx
+            vy = getRandomFloat(0, MAX_ANGLE_DEC) * MAX_SPEED
+            vx = MAX_SPEED - vy
             if (RandomBoolean()) {
                 vy = -vy
             }
         }
     }
 
+    /** inline-Funktion welche überprüft ob der Ball an der Oberen oder Unteren Kannte reflektiert wird. */
     function _CheckTopAndBottomBorder() {
-        //An dem oberen und unteren Balken refelktieren  
         if (y < 50) {
             y = 50
             vy = -vy;
@@ -127,6 +145,7 @@ function doUpdate() {
         }
     }
 
+    /** inline-Funktion welche überprüft ob der Ball an einem der Spieler reflektiert wird. */
     function _CheckPlayers() {
         if ((50 <= x) && (x <= 65)) {
             //Hitpos bestimmen
@@ -140,7 +159,7 @@ function doUpdate() {
                 } else {
                     let vz = Math.sign(vy)
                     if (vz == 0) { vz = Math.sign(RelHitpos) }
-                    vy = vz * ((Math.abs(RelHitpos) / 85) * 0.5) * MAX_SPEED // 0.5 für 45° Maximal-Winkel
+                    vy = vz * ((Math.abs(RelHitpos) / 85) * MAX_ANGLE_DEC) * MAX_SPEED
                     vx = (MAX_SPEED - Math.abs(vy))
                 }
             }
@@ -155,7 +174,7 @@ function doUpdate() {
                 } else {
                     let vz = Math.sign(vy)
                     if (vz == 0) { vz = Math.sign(RelHitpos) }
-                    vy = vz * ((Math.abs(RelHitpos) / 85) * 0.5) * MAX_SPEED // 0.5 für 45° Maximal-Winkel
+                    vy = vz * ((Math.abs(RelHitpos) / 85) * MAX_ANGLE_DEC) * MAX_SPEED // 0.5 für 45° Maximal-Winkel
                     vx = -(MAX_SPEED - Math.abs(vy))
                 }
             }
@@ -175,20 +194,32 @@ function doUpdate() {
     ball.css("top", y + vy + 'px')
 }
 
+
+/** Gibt einen pseudo-zufällig bestimmten Boolean wieder */
 function RandomBoolean() {
     return Math.random() < 0.5;
 }
 
+/** Gibt eine pseudo-zufällige Ganzzahl zwischen min und max wieder
+ *  @param min - minimaler rückgabe-Wert, wird nach unten gerundet
+ *  @param max - maximaler rückgabe-Wert, wird nach oben gerundet 
+ */
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+/** Gibt eine pseudo-zufällige Gleitkommazahl zwischen min und max wieder
+ *  @param min - minimaler rückgabe-Wert
+ *  @param max - maximaler rückgabe-Wert
+ */
 function getRandomFloat(min, max) {
     return Math.random() * (max - min) + min;
 }
 
+/** Gibt dem linken Spieler ein Tor und aktualisiert das Interface. 
+ * Wenn mindestens 5 Tore vorhanden sind wird das Spiel beendet */
 function addp1Score() {
     score1++;
     if (score1 == 5) {
@@ -202,6 +233,8 @@ function addp1Score() {
 
 }
 
+/** Gibt dem rechten Spieler ein Tor und aktualisiert das Interface. 
+ * Wenn mindestens 5 Tore vorhanden sind wird das Spiel beendet */
 function addp2Score() {
     score2++;
     if (score2 == 5) {
@@ -214,12 +247,15 @@ function addp2Score() {
 
 }
 
+
+/** Setzt das Spiel zurück indem die Gameloop beendet wird, der Ball und die Bewegungs-Hotkeys entfernt werden. 
+ * Das Spiel kann mithilfe der START_CODE Taste neugestartet werden. */
 function resetGame() {
     window.clearInterval(WindowIntervalID);
     document.onkeydown = undefined;
     $('.ball').remove()
     document.onkeydown = (event) => {
-        if (event.code == 'Space') {
+        if (event.code == START_CODE) {
             setupGame()
         }
     }
