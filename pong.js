@@ -97,7 +97,7 @@ function doUpdate() {
             ball.css("left", "640px")
             y = getRandomInt(75, 625)
             ball.css("top", y + "px")
-            vx = getRandomFloat(0.2, 0.8) * 7
+            vx = -(getRandomFloat(0.2, 0.8) * 7)
             vy = 7 - vx
             if (RandomBoolean()) {
                 vy = -vy
@@ -108,7 +108,7 @@ function doUpdate() {
             ball.css("left", "640px")
             y = getRandomInt(75, 625)
             ball.css("top", y + "px")
-            vx = -(getRandomFloat(0.2, 0.8) * 7)
+            vx = getRandomFloat(0.2, 0.8) * 7
             vy = 7 + vx
             if (RandomBoolean()) {
                 vy = -vy
