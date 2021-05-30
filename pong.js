@@ -5,41 +5,40 @@ let score2
 let WindowIntervalID
 const MAX_SPEED = 7;
 $(() => {
-    setupDomVars()
-    setupCenterBar()
-    setupPlayers()
+    function _setupDomVars() {
+        window.game = $(".game")
+        window.topbar = $(".topbar")
+        window.bottombar = $(".bottombar")
+    }
+
+    function _setupCenterBar() {
+        for (var i = 1; i < 14; i++) {
+            let newBlock = $('<div class="middleline"></div>')
+            newBlock.css("top", 50 * i)
+            window.game.append(newBlock)
+        }
+    }
+
+    function _setupPlayers() {
+        window.p1 = $('<div class="player"></div>');
+        window.p1.css("left", "50px");
+        window.game.append(window.p1);
+
+        window.p2 = $('<div class="player"></div>');
+        window.p2.css("left", "1205px");
+        window.game.append(window.p2);
+    }
+
+
+    _setupDomVars()
+    _setupCenterBar()
+    _setupPlayers()
     document.onkeydown = (event) => {
-        console.log(event.code)
         if (event.code == 'Space') {
             setupGame()
         }
     }
 })
-
-
-function setupCenterBar() {
-    for (var i = 1; i < 14; i++) {
-        let newBlock = $('<div class="middleline"></div>')
-        newBlock.css("top", 50 * i)
-        window.game.append(newBlock)
-    }
-}
-
-function setupDomVars() {
-    window.game = $(".game")
-    window.topbar = $(".topbar")
-    window.bottombar = $(".bottombar")
-}
-
-function setupPlayers() {
-    window.p1 = $('<div class="player"></div>');
-    window.p1.css("left", "50px");
-    window.game.append(window.p1);
-
-    window.p2 = $('<div class="player"></div>');
-    window.p2.css("left", "1205px");
-    window.game.append(window.p2);
-}
 
 function setupGame() {
     document.onkeydown = (event) => {
