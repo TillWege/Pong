@@ -230,7 +230,8 @@ function addp1Score() {
     score1++;
     if (score1 == 5) {
         window.alert("Spieler 1 hat gewonnen!" + "\n" + "Space zum erneut spielen")
-        $('#score1').text(5)
+        $('#score1').text("W")
+        $('#score2').text("L")
         resetGame()
     } else {
         $('#score1').text(score1)
@@ -245,7 +246,8 @@ function addp2Score() {
     score2++;
     if (score2 == 5) {
         window.alert("Spieler 2 hat gewonnen!" + "\n" + "Space zum erneut spielen")
-        $('#score2').text(5)
+        $('#score2').text("W")
+        $('#score1').text("L")
         resetGame()
     } else {
         $('#score2').text(score2)
