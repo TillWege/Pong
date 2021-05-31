@@ -63,7 +63,10 @@ function setupGame() {
         } else if (event.key == 'ArrowDown') {
             moveplayer(window.p2, +PLAYER_SPEED)
         } else if (event.key == 'p') {
-            debugger
+            console.log('x:' + parseInt(ball.css("left")))
+            console.log('y:' + parseInt(ball.css("top")))
+            console.log('vx:' + vx)
+            console.log('vy:' + vy)
         }
     }
 
@@ -182,8 +185,11 @@ function doUpdate() {
     }
 
     let ball = $('.ball')
-    let x = parseInt(ball.css("left"))
-    let y = parseInt(ball.css("top"))
+
+    //let x = parseInt(ball.css("left"))
+    //let y = parseInt(ball.css("top"))
+    let x = parseFloat(ball.css("left"))
+    let y = parseFloat(ball.css("top"))
 
     _CheckTor()
     _CheckTopAndBottomBorder()
